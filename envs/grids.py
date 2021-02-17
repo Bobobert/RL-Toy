@@ -203,12 +203,10 @@ class gridWorld(Environment):
 
     def validateAction(self, state, action:int):
         if self.movMode == "8C":
-            assert (action > 0) and (action < 10), 
-                "Action must be an integer between 1 and 9"
+            assert (action > 0) and (action < 10), "Action must be an integer between 1 and 9"
             dx, dy = self.actions[action - 1]
         elif self.movMode == "4C":
-            assert (action > 0) and (action < 6), 
-                "Action must be an integer between 1 and 5"
+            assert (action > 0) and (action < 6), "Action must be an integer between 1 and 5"
             dx, dy = self.actions[self.actions4C[action - 1]]
         self.lastAction = action
         posX, posY = state["agent"]
