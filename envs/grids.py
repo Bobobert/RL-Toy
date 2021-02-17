@@ -1,4 +1,4 @@
-from basics import  Environment, ActionSpace, ObservationSpace
+from base import  Environment, ActionSpace, ObservationSpace
 from base.const import *
 
 class gridWorld(Environment):
