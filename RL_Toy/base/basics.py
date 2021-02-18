@@ -1,4 +1,4 @@
-from .const import *
+from RL_Toy.base.const import *
 
 class ActionSpace(ABC):
     """
@@ -133,7 +133,7 @@ class Environment(ABC):
         raise NotImplemented
     def transProb(self, state, action):
         """
-        Returns the probabilities and states of the transitions from the
+        Returns the probabilities and states of the transitions from RL_Toy.the
         state and action given.
         """
         raise NotImplemented

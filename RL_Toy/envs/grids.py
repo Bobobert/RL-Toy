@@ -1,5 +1,5 @@
-from base import  Environment, ActionSpace, ObservationSpace
-from base.const import *
+from RL_Toy.base import  Environment, ActionSpace, ObservationSpace
+from RL_Toy.base.const import *
 
 class gridWorld(Environment):
     """
@@ -127,7 +127,7 @@ class gridWorld(Environment):
         """
         for g in goals:
             self.validateTuple(g)
-            self.goals += [g]
+            self.goal += [g]
 
     def reset(self, initialPos = None):
         self.grid[:,:] = 0
@@ -248,7 +248,7 @@ class gridWorld(Environment):
 
     def render(self, values=None, policy=None):
         # Suboptimal but simple to understand graphics for the environment
-        fig = plt.figure(
+        _ = plt.figure(
             figsize=(self._w * self.GRAPHSCALE, self._h * self.GRAPHSCALE), 
             clear = True)
         self.frame[:,:] = self.EMPTYC

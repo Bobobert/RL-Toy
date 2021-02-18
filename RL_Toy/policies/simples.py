@@ -1,5 +1,5 @@
-from base import Policy, Environment
-from base.const import *
+from RL_Toy.base import Policy, Environment
+from RL_Toy.base.const import *
 
 class uniformRandomPolicy(Policy):
     def __init__(self, env:Environment):

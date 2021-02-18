@@ -1,0 +1,1 @@
+from RL_Toy.policies.simples import uniformRandomPolicy, gridPolicy
