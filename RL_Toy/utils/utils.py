@@ -13,6 +13,9 @@ def repGIF(src: str):
         display(Image(file.read()))
         
 def runEnv(env, steps:int, name:str = "lrun"):
+    """
+    Run random steps in the environment
+    """
     name = name + ".gif"
     frames = []
     totR, epR, eps = 0, 0, 1

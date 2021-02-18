@@ -8,7 +8,7 @@ from RL_Toy.version import VERSION
 
 setup(
     name="RL_Toy",
-    packages=["Rl_Toy"],
+    packages=["RL_Toy"],
     version=VERSION,
     description="Simple examples",
     url="https://github.com/Bobobert/RL_Toy",

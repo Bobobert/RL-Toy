@@ -93,7 +93,7 @@ class Environment(ABC):
         -------
         observation, reward, done
         """
-        raise NotImplemented
+        raise NotImplementedError
     def reset(self):
         """
         Restart the initial state of the environment, 
@@ -102,13 +102,13 @@ class Environment(ABC):
         ------
         obeservation
         """
-        raise NotImplemented
+        raise NotImplementedError
     def getObservation(self):
         """
         Calculates and returns the observation of 
         the actual state of the environment.
         """
-        raise NotImplemented
+        raise NotImplementedError
     def calculateReward(self, state):
         """
         Calculate with the actual mode the reward 
@@ -118,32 +118,32 @@ class Environment(ABC):
         -------
         reward
         """
-        raise NotImplemented
+        raise NotImplementedError
     @property
     def actionSpace(self):
         """
         Returns the ActionShape class designed of the environment.
         """
-        raise NotImplemented
+        raise NotImplementedError
     @property
     def observationSpace(self):
         """
         Returns a list or generator of all the states availables. 
         """
-        raise NotImplemented
+        raise NotImplementedError
     def transProb(self, state, action):
         """
         Returns the probabilities and states of the transitions from RL_Toy.the
         state and action given.
         """
-        raise NotImplemented
+        raise NotImplementedError
     def isTerminal(self, state):
         """
         Returns the bool that expreses if 
         the actual state is a terminal one
         or not.
         """
-        raise NotImplemented
+        raise NotImplementedError
 
 class Policy(ABC):
     """
@@ -154,9 +154,9 @@ class Policy(ABC):
         Calculates and returns the corresponding 
         action for the state given.
         """
-        raise NotImplemented
+        raise NotImplementedError
     def update(self, state, action):
         """
         Update the action per state manner of the policy
         """
-        raise NotImplemented
+        raise NotImplementedError
