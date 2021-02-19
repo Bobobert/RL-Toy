@@ -56,8 +56,7 @@ class gridWorld(Environment):
 
     actions4C = [1,3,4,5,7]
 
-    def __init__(self, width:int, height:int, initPos:tuple, 
-                 goal:tuple, movement:str = "4C", horizon:int = 10**6):
+    def __init__(self, width:int, height:int, initPos:tuple, goal:tuple, movement:str = "4C", horizon:int = 10**6):
         # Grid Related
         self.grid = np.zeros((width, height), dtype=np.uint8)
         self._w = width
@@ -74,10 +73,9 @@ class gridWorld(Environment):
         self.initX, self.initY = initPos
         self.posX, self.posY = initPos
         self.__actionSpace = ActionSpace(9 if movement == "8C" else 5, 1)
-        self.__obsSpace = ObservationSpace(self.grid.shape)
+        self._obsSpace = ObservationSpace(self.grid.shape)
         # Graphics related
-        self.frame = np.zeros((width * self.CELLSIZE, height * self.CELLSIZE, 3), 
-                              dtype=np.uint8)
+        self.frame = np.zeros((width * self.CELLSIZE, height * self.CELLSIZE, 3), dtype=np.uint8)
         # Initialize the grid
         self.reset()
 
@@ -86,8 +84,7 @@ class gridWorld(Environment):
         if (T[0] < 0) or (T[1] < 0):
             raise ValueError("Values of the tuple must be non-negative")
         if (T[0] >= self._w) or (T[1] >= self._h):
-            raise ValueError("Value of the tuple need to be in the \
-                    interval x[0, {}), y[0, {})".format(self._w, self._h))
+            raise ValueError("Value of the tuple need to be in the interval x[0, {}), y[0, {})".format(self._w, self._h))
         return True
     
     def addVortex(self, *vortex):
@@ -248,9 +245,7 @@ class gridWorld(Environment):
 
     def render(self, values=None, policy=None):
         # Suboptimal but simple to understand graphics for the environment
-        _ = plt.figure(
-            figsize=(self._w * self.GRAPHSCALE, self._h * self.GRAPHSCALE), 
-            clear = True)
+        fig = plt.figure(figsize=(self._w * self.GRAPHSCALE, self._h * self.GRAPHSCALE), clear = True)
         self.frame[:,:] = self.EMPTYC
         for i in range(self._w):
             for j in range(self._h):
@@ -272,8 +267,7 @@ class gridWorld(Environment):
                     if self.movMode == "4C":
                         action = self.actions4C[action]
                     dx, dy = self.actions[action]
-                    plt.arrow(nj + 1.5, ni + 1.5, 1.5 * dy, 1.5 * dx,
-                              width=0.2, color=self.POLICYC)
+                    plt.arrow(nj + 1.5, ni + 1.5, 1.5 * dy, 1.5 * dx, width=0.2, color=self.POLICYC)
         ni, nj = self.posX * self.CELLSIZE, self.posY * self.CELLSIZE
         f = self.frame[ni:ni+self.CELLSIZE,nj:nj+self.CELLSIZE,:] 
         f[self.AGENTD,:] = self.AGENTC
@@ -292,7 +286,7 @@ class gridWorld(Environment):
 
     @property
     def observationSpace(self):
-        return self.__obsSpace
+        return self._obsSpace
 
     def transProb(self, state, action):
         # Deterministic Environment
