@@ -54,32 +54,86 @@ class ObservationSpace(ABC):
 
     Parameters
     ----------
-    n: int
-        Number of total variation that cell can occupy. 
-        These are consider to be sequential.
-    shape : tuple
-        Shape of the state compose of cell's states.
+    n: tuple
+        Number of total variations a part of the tuple state can take
+        This also indicates how is shaped th state tuple
     minValue: int
         Default 0. The minimum value that a cell's state can take. It's
         the lower inclusive of the action space intervals 
         [minValue, minValue + n)
     """
-    def __init__(self, n:int, shape:tuple, minValue:int = 0):
-        assert n > 0, "Number of cell states must be greater than 0"
-        self._state_ = np.zeros(shape, dtype=np.int)
+    def __init__(self, n:tuple, minValue:int = 0):
+        if isinstance(n, int):
+            n = (n,)
+        assert len(n) > 0, "Tuple must contain at least 1 item"
         self._n_ = n
         self.mV = minValue
 
+    def __iter__(self):
+        self._i_ = []
+        self._tl_ = []
+        for i in self._n_:
+            ax = abs(i - self.mV)
+            self._tl_+= [ax - 1] # Max items on this position
+            self._i_ += [0] # For actual counter
+        self._ii_, self._is_ = 1, 1 # Index position inferior, superior
+        return self
+
+    def __next__(self):
+        
+        def incSupr():
+            nonlocal self
+            if self._i_[self._is_] == (self._tl_[self._is_]):
+                self._i_[self._is_] = 0 # reset superior index
+                self._is_ += 1 # increment one
+                if self._is_ == len(self._n_):
+                    raise StopIteration
+                incSupr()
+            else:
+                self._i_[self._is_] += 1
+                self._is_ = 1
+
+        def zeroCnt():
+            nonlocal self
+            if self._i_[0] == (self._tl_[0]):
+                self._i_[0] = 0 # Reset the low index
+                incSupr()
+            else:
+                self._i_[0] += 1
+
+        def doTpl():
+            nonlocal self
+            tupl = []
+            for i in self._i_:
+                tupl += [self.mV + i]
+            return tupl
+
+        if len(self._n_) < 2:
+                if self._i_[0] <= (self._tl_[0]):
+                    t = doTpl()
+                    self._i_[0] += 1
+                    return t
+                else:
+                    raise StopIteration
+        else:
+            zeroCnt()
+        return doTpl()
+
+
     @property
     def shape(self):
-        return self._state_.shape
+        return self._n_
 
     def sample(self):
         """
         Returns a random sample with an uniform distribution of the
         cell's states.
         """
-        return np.random.randint(self.mV, self.mV + self._n_, size = self.shape)
+        newState = []
+        for i in self._n_:
+            newState += [np.random.randint(self.mV, self.mV + i)]
+        return newState
+
 
 class Environment(ABC):
     """
