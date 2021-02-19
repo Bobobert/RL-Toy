@@ -73,7 +73,7 @@ class gridWorld(Environment):
         self.initX, self.initY = initPos
         self.posX, self.posY = initPos
         self.__actionSpace = ActionSpace(9 if movement == "8C" else 5, 1)
-        self._obsSpace = ObservationSpace(self.grid.shape)
+        self._obsSpace = None
         # Graphics related
         self.frame = np.zeros((width * self.CELLSIZE, height * self.CELLSIZE, 3), dtype=np.uint8)
         # Initialize the grid
@@ -286,6 +286,8 @@ class gridWorld(Environment):
 
     @property
     def observationSpace(self):
+        if self._obsSpace is None:
+            self._obsSpace = ObservationSpace(self)
         return self._obsSpace
 
     def transProb(self, state, action):
