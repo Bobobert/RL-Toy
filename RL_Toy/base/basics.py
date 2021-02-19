@@ -197,7 +197,7 @@ class ObservationSpace(ABC):
             zeroCnt()
         tpl = doTpl()
         if not self.env.isValid(tpl):
-            return __next__()
+            return self.__next__()
             
         return tpl
 
