@@ -298,7 +298,7 @@ class gridWorld(Environment):
             cellAgent = self.grid[state["agent"]]
         else:
             cellAgent = self.grid[state]
-        if cellAgent == self.VORTEX or cellAgent == self.GOAL:
+        if cellAgent == self.VORTEX or cellAgent == self.GOAL or cellAgent == self.OBST:
             return True
         else:
             return False
