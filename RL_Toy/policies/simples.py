@@ -20,7 +20,7 @@ class gridPolicy(Policy):
         self.randomInit()
 
     def randomInit(self):
-        for state in self.env.stateSpace:
+        for state in self.env.observationSpace:
             self.pi[state] = self.env.actionSpace.sample()
 
     def update(self, state, action):
