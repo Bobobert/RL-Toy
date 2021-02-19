@@ -143,9 +143,6 @@ class ObservationSpace(ABC):
         [minValue, minValue + n)
     """
     def __init__(self, env:Environment, minValue:int = 0):
-        if isinstance(n, int):
-            n = (n,)
-        assert len(n) > 0, "Tuple must contain at least 1 item"
         self.env = env
         self._n_ = env.shape
         self.mV = minValue
