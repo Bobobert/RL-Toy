@@ -74,7 +74,7 @@ class gridWorld(Environment):
         self.initX, self.initY = initPos
         self.posX, self.posY = initPos
         self.__actionSpace = ActionSpace(9 if movement == "8C" else 5, 1)
-        self.__obsSpace = ObservationSpace(4, self.grid.shape)
+        self.__obsSpace = ObservationSpace(self.grid.shape)
         # Graphics related
         self.frame = np.zeros((width * self.CELLSIZE, height * self.CELLSIZE, 3), 
                               dtype=np.uint8)
