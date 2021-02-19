@@ -298,10 +298,19 @@ class gridWorld(Environment):
             cellAgent = self.grid[state["agent"]]
         else:
             cellAgent = self.grid[state]
-        if cellAgent == self.VORTEX or cellAgent == self.GOAL or cellAgent == self.OBST:
+        if cellAgent == self.VORTEX or cellAgent == self.GOAL:
             return True
         else:
             return False
+    
+    def isValid(self, state):
+        if isinstance(state, dict):
+            cellAgent = self.grid[state["agent"]]
+        else:
+            cellAgent = self.grid[state]
+        if cellAgent == self.OBST:
+            return False
+        return True
 
     @property
     def shape(self):

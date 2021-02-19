@@ -54,19 +54,19 @@ class ObservationSpace(ABC):
 
     Parameters
     ----------
-    n: tuple
-        Number of total variations a part of the tuple state can take
-        This also indicates how is shaped th state tuple
+    env: Environment
+        All the object
     minValue: int
         Default 0. The minimum value that a cell's state can take. It's
         the lower inclusive of the action space intervals 
         [minValue, minValue + n)
     """
-    def __init__(self, n:tuple, minValue:int = 0):
+    def __init__(self, env:Environment, minValue:int = 0):
         if isinstance(n, int):
             n = (n,)
         assert len(n) > 0, "Tuple must contain at least 1 item"
-        self._n_ = n
+        self.env = env
+        self._n_ = env.shape
         self.mV = minValue
 
     def __iter__(self):
@@ -117,7 +117,11 @@ class ObservationSpace(ABC):
                     raise StopIteration
         else:
             zeroCnt()
-        return doTpl()
+        tpl = doTpl()
+        if not self.env.isValid(tpl):
+            return __next__()
+            
+        return tpl
 
 
     @property
