@@ -106,7 +106,7 @@ class ObservationSpace(ABC):
             tupl = []
             for i in self._i_:
                 tupl += [self.mV + i]
-            return tupl
+            return tuple(tupl)
 
         if len(self._n_) < 2:
                 if self._i_[0] <= (self._tl_[0]):
