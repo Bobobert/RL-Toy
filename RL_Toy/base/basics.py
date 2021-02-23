@@ -196,6 +196,7 @@ class ObservationSpace(ABC):
         else:
             zeroCnt()
         tpl = doTpl()
+
         if not self.env.isValid(tpl):
             return self.__next__()
             
@@ -214,3 +215,4 @@ class ObservationSpace(ABC):
         for i in self._n_:
             newState += [np.random.randint(self.mV, self.mV + i)]
         return newState
+        
