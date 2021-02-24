@@ -45,6 +45,6 @@ class gridPolicyEpsilon(gridPolicy):
             action = self.env.actionSpace.sample()
         else:
             if isinstance(state, dict):
-            state = state["agent"]
+                state = state["agent"]
             action = self.pi[state]
         return action
