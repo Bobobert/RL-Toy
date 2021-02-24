@@ -286,9 +286,12 @@ class gridWorld(Environment):
 
     @property
     def observationSpace(self):
-        if self._obsSpace is None:
-            self._obsSpace = ObservationSpace(self)
-        return self._obsSpace
+        states = []
+        for i in range(self._w):
+            for j in range(self._h):
+                if not self.grid[i,j] == self.OBST:
+                    states += [(i,j)]
+        return states
 
     def transProb(self, state, action):
         # Deterministic Environment
