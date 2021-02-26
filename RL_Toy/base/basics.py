@@ -38,6 +38,9 @@ class ActionSpace(ABC):
         self.i += 1
         return nx
 
+    def __len__(self):
+        return self.n
+
     def sample(self):
         """
         Returns a random sample with an uniform distribution of the

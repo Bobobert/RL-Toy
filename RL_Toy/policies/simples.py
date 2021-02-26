@@ -14,7 +14,7 @@ class uniformRandomPolicy(Policy):
 
 class gridPolicy(Policy):
     def __init__(self, env:Environment):
-        self.pi = np.zeros(env.shape, dtype=np.uint8)
+        self.pi = np.zeros(env.shape, dtype=UINT_DEFT)
         # or could be a dict() as well
         self.env = env
         self.randomInit()
