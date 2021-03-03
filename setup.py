@@ -14,7 +14,7 @@ setup(
     author="Roberto-Esteban Lopez",
     author_email="robertolopez94@outlook.com",
     license="MIT",
-    install_requires=["numpy", "matplotlib", "gif", ],
+    install_requires=["numpy", "matplotlib", "gif", "gym"],
     python_requires=">=3.6",
     packages=[package for package in find_packages()
                 if package.startswith('RL_Toy')],
