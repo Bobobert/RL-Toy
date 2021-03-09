@@ -134,17 +134,18 @@ class Policy(ABC):
         Update the action per state manner of the policy
         """
         raise NotImplementedError
-
-    def _get_epsilon(self):
-        raise NotImplementedError
-
+    
+    @property
+    def epsilon(self):
+        return self._eps_
+    
+    @epsilon.setter
     def _set_epsilon(self, X):
         if (X >= 0) and (X <= 1):
             self._eps_ = X
         else:
             print("Invalid Epsilon, remain the same {}".format(self._eps_))
 
-    epsilon = property(_get_epsilon, _set_epsilon)
 
 class ObservationSpace(ABC):
     """
