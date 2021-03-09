@@ -140,7 +140,7 @@ class Policy(ABC):
         return self._eps_
     
     @epsilon.setter
-    def _set_epsilon(self, X):
+    def epsilon(self, X):
         if (X >= 0) and (X <= 1):
             self._eps_ = X
         else:

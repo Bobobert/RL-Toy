@@ -76,7 +76,7 @@ class gymPolicyDiscreteFromCon(Policy):
 
     """
     def __init__(self, env, steps:list, limits = None, epsilon:float = 0.0):
-
+        
         self.spaces = toDiscreteSpace(env.observation_space, steps, limits)
         self.observation_space = cartesian_product(*self.spaces)
         self.aS = env.action_space
@@ -134,6 +134,3 @@ class gymPolicyDiscreteFromCon(Policy):
                 i = b - 1
             pos += [space[i]]
         return tuple(pos)
-    
-    def _get_epsilon(self):
-        return self._eps_
