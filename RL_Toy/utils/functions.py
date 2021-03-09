@@ -1,6 +1,10 @@
-class Q_function():
+from RL_Toy.base.const import *
+
+class Q_function:
     """
-    Action-value function in hashables.
+    Action-value function in hash
+
+    Supports standard method [] for (state, action)
     """
 
     DEF_ACTION = 5
