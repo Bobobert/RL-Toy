@@ -59,12 +59,13 @@ def runPolicy(env, policy, steps:int, name:str = None):
     """
     name = name + ".gif" if name is not None else "runPolicy {}.gif".format(timeFormatedS())
     frames = []
+    policy.test = True
     totR, epR, eps = 0, 0, 1
     obs = env.reset()
     for _ in range(steps):
         frames.append(frame(env))
         action = policy.getAction(obs)
-        obs, reward, done, _= env.step(action)
+        obs, reward, done, _ = env.step(action)
         epR += reward
         if done: 
             obs = env.reset()
@@ -72,6 +73,7 @@ def runPolicy(env, policy, steps:int, name:str = None):
             totR += epR
             epR = 0
     totR = totR / eps
+    policy.test = False
     # Creates .gif
     gif.save(frames, name, duration = steps * 0.1, unit="s", between="startend")
     # Prints output

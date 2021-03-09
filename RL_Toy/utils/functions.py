@@ -36,7 +36,7 @@ class Q_function():
         if fromState is None:
             self.states[state] = {action:value}
         else:
-            action_value = fromState.get(action, 0)
+            #action_value = fromState.get(action, 0)
             fromState[action] = value 
 
     def maxAction(self, state):
@@ -55,3 +55,53 @@ class Q_function():
 
     def getStates(self):
         return self.states.keys()
+
+def checkForTuple(obj):
+    if isinstance(obj, np.ndarray):
+        return tuple(obj.tolist())
+    elif isinstance(obj, (list, tuple)):
+        return tuple(obj)
+    else:
+        raise TypeError("Object type {} not supported".format(type(obj)))
+
+def toDiscreteSpace(box_space, step: list, limits = None):
+    """
+    Function to generate a discrete space from a continuos one
+
+    parameters
+    ----------
+    box_space: gym.spaces.Box
+        Expecting a box type of space to generate a discrete one
+    step: list
+        A list with the step sizes for each dimension. This should match
+        the observation_space.shape
+    limits: list
+        A list with the limits per interval, if None no limits are applied.
+        Default is None
+    """
+    low = box_space.low
+    high = box_space.high
+    shape = box_space.shape
+    spaces = []
+    if limits is None:
+        limits = [None for i in step]
+    for l, h, step_, limit in zip(low, high, step, limits):
+        # Calculating how many boxes are needed
+        if limit is not None:
+            l, h = limit
+        boxes = ceil(abs(h - l)/step_)
+        spaces += [np.linspace(l, h, num = boxes)]
+
+    return spaces
+
+def cartesian_product(*arrays):
+    """
+    Cartesian product of ndarrays
+    Extracted from https://stackoverflow.com/a/11146645
+    """
+    la = len(arrays)
+    dtype = np.result_type(*arrays)
+    arr = np.empty([len(a) for a in arrays] + [la], dtype=dtype)
+    for i, a in enumerate(np.ix_(*arrays)):
+        arr[...,i] = a
+    return arr.reshape(-1, la)

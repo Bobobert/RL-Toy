@@ -117,6 +117,10 @@ class Policy(ABC):
     """
     Policy base class.
     """
+
+    test = False
+    greedy = False
+    
     def getAction(self, state):
         """
         Calculates and returns the corresponding 
@@ -127,6 +131,9 @@ class Policy(ABC):
         """
         Update the action per state manner of the policy
         """
+        raise NotImplementedError
+    @property
+    def epsilon(self):
         raise NotImplementedError
 
 class ObservationSpace(ABC):
