@@ -120,6 +120,7 @@ class Policy(ABC):
 
     test = False
     greedy = False
+    _eps_ = 0.0
     
     def getAction(self, state):
         """
@@ -127,14 +128,23 @@ class Policy(ABC):
         action for the state given.
         """
         raise NotImplementedError
+
     def update(self, state, action):
         """
         Update the action per state manner of the policy
         """
         raise NotImplementedError
-    @property
-    def epsilon(self):
+
+    def _get_epsilon(self):
         raise NotImplementedError
+
+    def _set_epsilon(self, X):
+        if (X >= 0) and (X <= 1):
+            self._eps_ = X
+        else:
+            print("Invalid Epsilon, remain the same {}".format(self._eps_))
+
+    epsilon = property(_get_epsilon, _set_epsilon)
 
 class ObservationSpace(ABC):
     """

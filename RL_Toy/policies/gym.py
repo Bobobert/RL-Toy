@@ -134,3 +134,6 @@ class gymPolicyDiscreteFromCon(Policy):
                 i = b - 1
             pos += [space[i]]
         return tuple(pos)
+    
+    def _get_epsilon(self):
+        return self._eps_
