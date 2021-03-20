@@ -7,7 +7,7 @@ class Q_function:
     Supports standard method [] for (state, action)
     """
 
-    DEF_ACTION = 5
+    DEF_ACTION = 0
 
     def __init__(self):
         self.states = dict()
@@ -32,7 +32,7 @@ class Q_function:
     def __getitem__(self, state_action):
         state, action = self.decomposeTuple(state_action)
         fromState = self.states.get(state, dict())
-        return fromState.get(action, 0)
+        return fromState.get(action, DEF_ACTION)
     
     def __setitem__(self, state_action, value):
         state, action = self.decomposeTuple(state_action)
