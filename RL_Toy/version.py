@@ -1,1 +1,1 @@
-VERSION = "0.b6"
+VERSION = "0.b7"

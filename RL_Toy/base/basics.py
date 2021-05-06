@@ -237,3 +237,198 @@ class ObservationSpace(ABC):
             newState += [np.random.randint(self.mV, self.mV + i)]
         return newState
         
+class Agent:
+    """
+    Base object for an agent. Which works as container
+    for the policy, the environment and a middle ground
+    for any particular processing between those for the 
+    RL algorithm.
+    
+    Method test is not recomended to be modified.
+    """
+    policy = None
+    env, env_test = None, None
+    name = "base_Agent_v0"
+    done, lastObservation = True, None
+    episodeSteps, episodeReward = 0, 0.0
+    def __init__(self):
+        assert self.env is not None, \
+            "Agent needs environment reference"
+        assert self.policy is not None, \
+            "Agent needs policy object"
+
+    def processObs(self, obs):
+        """
+        Method for each agent to process the
+        observation if need for the policy or another
+        further methods
+        """
+        return obs
+    
+    def processAction(self, action_raw):
+        """
+        If needed, this method should process and adecuate
+        the action signla properly for the environment
+        """
+        return action_raw
+
+    def processReward(self, reward_raw):
+        """
+        If need, this method should process the 
+        reward, still returns (int or float)
+        """
+        return reward_raw
+
+    def step(self, **kwargs):
+        """
+        Execute a step on the environment with 
+        the given policy
+        
+        returns
+        action, reward, steps, done, info
+        """
+        env, pi = self.env, self.policy
+        if self.done:
+            obs = env.reset()
+            self.done = False
+            self.episodeReward = 0.0
+            self.episodeSteps = 0
+        else:
+            obs = self.lastObservation
+
+        state = self.processObs(obs)
+        action_raw = pi.getAction(state)
+        action = self.processAction(action_raw)
+        nextObs, reward, done, info = env.step(action)
+
+        # Save reward
+        r = self.processReward(reward)
+        self.episodeSteps += 1
+        self.episodeReward += r
+
+        self.lastObservation = nextObs
+        self.done = done
+
+        return state, action, reward, self.episodeSteps, done, info
+    
+    def test(self, **kwargs):
+        """
+        Execute a test on the environment with 
+        the actual policy
+        """
+        tryPiTest = True
+        try:
+            self.policy.test = True
+        except AttributeError:
+            tryPiTest = False
+        pi = self.policy
+
+        if self.env_test is None:
+            env = self.env
+            self.done = True
+        else:
+            env = self.env_test
+
+        n_test = kwargs.get("n_test", 10)
+        tests_results, tests_steps = [], []
+        for i in range(n_test):
+            done = False
+            obs = env.reset()
+            test_return, test_steps = 0.0, 0
+            while not done:
+                state = self.processObs(obs)
+                ar = pi.getAction(state)
+                obs, reward, done, _ = env.step(self.processAction(ar))
+                test_return += reward
+                test_steps += 1
+            tests_results += [test_return]
+            tests_steps += [test_steps]
+
+        if tryPiTest:
+            self.policy.test = False
+
+        return tests_results, tests_steps
+
+    def update(self, obs, action):
+        """
+        This method should be modified if one is expecting
+        to process the information before sending it to the
+        policy. Otherwise should work properly
+        """
+        self.pi.update(obs, action)
+        
+class AgentToy(Agent):
+    """
+    Based on Agent with exceptions for the lack of
+    info reeturn from the RL_Toy environments.
+    """
+    def step(self, **kwargs):
+        """
+        Execute a step on the environment with 
+        the given policy
+        
+        returns
+        action, reward, steps, done, info
+        """
+        env, pi = self.env, self.policy
+        if self.done:
+            obs = env.reset()
+            self.done = False
+            self.episodeReward = 0.0
+            self.episodeSteps = 0
+        else:
+            obs = self.lastObservation
+
+        state = self.processObs(obs)
+        action_raw = pi.getAction(state)
+        action = self.processAction(action_raw)
+        nextObs, reward, done = env.step(action)
+
+        # Save reward
+        r = self.processReward(reward)
+        self.episodeSteps += 1
+        self.episodeReward += r
+
+        self.lastObservation = nextObs
+        self.done = done
+
+        return state, action, reward, self.episodeSteps, done 
+    
+    def test(self, **kwargs):
+        """
+        Execute a test on the environment with 
+        the actual policy
+        """
+        tryPiTest = True
+        try:
+            self.policy.test = True
+        except AttributeError:
+            tryPiTest = False
+        pi = self.policy
+
+        if self.env_test is None:
+            env = self.env
+            self.done = True
+        else:
+            env = self.env_test
+
+        n_test = kwargs.get("n_test", 10)
+        tests_results, tests_steps = [], []
+        for i in range(n_test):
+            done = False
+            obs = env.reset()
+            test_return, test_steps = 0.0, 0
+            while not done:
+                state = self.processObs(obs)
+                ar = pi.getAction(state)
+                obs, reward, done = env.step(self.processAction(ar))
+                test_return += reward
+                test_steps += 1
+            tests_results += [test_return]
+            tests_steps += [test_steps]
+
+        if tryPiTest:
+            self.policy.test = False
+
+        return tests_results, tests_steps
+    
