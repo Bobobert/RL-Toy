@@ -1,1 +1,1 @@
-from RL_Toy.base.basics import Environment, Policy, ActionSpace, ObservationSpace
+from RL_Toy.base.basics import Environment, Policy, ActionSpace, ObservationSpace, Agent, AgentToy

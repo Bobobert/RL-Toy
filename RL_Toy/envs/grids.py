@@ -224,8 +224,10 @@ class gridWorld(Environment):
     
     def calculateReward(self, state):
         # For each movement
-        reward = -1 
-        cellAgent = self.grid[state["agent"]]
+        reward = -1
+        if isinstance(state, dict):
+            state = state["agent"]
+        cellAgent = self.grid[state]
         if cellAgent == self.VORTEX:
             # The agent has enter a vortex.
             reward += - 14
