@@ -359,7 +359,7 @@ class Agent:
         This method returns the action from the policy
         """
         state = self.processObs(obs)
-        return self.pi.getAction(state)
+        return self.policy.getAction(state)
         
     def testMode(self, mode : bool = True):
         """
