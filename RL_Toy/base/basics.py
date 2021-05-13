@@ -352,7 +352,7 @@ class Agent:
         """
         state = self.processObs(obs)
         action = self.processAction(action)
-        self.pi.update(state, action)
+        self.policy.update(state, action)
         
     def getAction(self, obs):
         """
