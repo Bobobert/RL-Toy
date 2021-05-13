@@ -316,11 +316,7 @@ class Agent:
         Execute a test on the environment with 
         the actual policy
         """
-        tryPiTest = True
-        try:
-            self.policy.test = True
-        except AttributeError:
-            tryPiTest = False
+        self.testMode(True)
         pi = self.policy
 
         if self.env_test is None:
@@ -344,8 +340,7 @@ class Agent:
             tests_results += [test_return]
             tests_steps += [test_steps]
 
-        if tryPiTest:
-            self.policy.test = False
+        self.testMode(False)
 
         return tests_results, tests_steps
 
@@ -355,7 +350,27 @@ class Agent:
         to process the information before sending it to the
         policy. Otherwise should work properly
         """
-        self.pi.update(obs, action)
+        state = self.processObs(obs)
+        action = self.processAction(action)
+        self.pi.update(state, action)
+        
+    def getAction(self, obs):
+        """
+        This method returns the action from the policy
+        """
+        state = self.processObs(obs)
+        return self.pi.getAction(state)
+        
+    def testMode(self, mode : bool = True):
+        """
+        If the policy supports it, its changed to 
+        test mode if mode is True.
+        """
+        try:
+            self.policy.test = mode
+        except AttributeError:
+            pass
+        
         
 class AgentToy(Agent):
     """
@@ -399,11 +414,7 @@ class AgentToy(Agent):
         Execute a test on the environment with 
         the actual policy
         """
-        tryPiTest = True
-        try:
-            self.policy.test = True
-        except AttributeError:
-            tryPiTest = False
+        self.testMode(True)
         pi = self.policy
 
         if self.env_test is None:
@@ -427,8 +438,7 @@ class AgentToy(Agent):
             tests_results += [test_return]
             tests_steps += [test_steps]
 
-        if tryPiTest:
-            self.policy.test = False
+        self.testMode(False)
 
         return tests_results, tests_steps
     
