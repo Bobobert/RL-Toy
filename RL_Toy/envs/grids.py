@@ -253,10 +253,10 @@ class gridWorld(Environment):
         
         if values is not None:
             if isinstance(values, Q_function):
-                V = np.zeros(self.shape)
-                for s in values.getStates():
-                    V[s] = values[(s, values.maxAction(s))]
-                values = V
+                Q = values
+                values = np.zeros(self.shape)
+                for s in Q.getStates():
+                    values[s] = Q[(s, Q.maxAction(s))]
         
         for i in range(self._w):
             for j in range(self._h):
