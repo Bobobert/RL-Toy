@@ -1,5 +1,6 @@
 from RL_Toy.base import  Environment, ActionSpace, ObservationSpace
 from RL_Toy.base.const import *
+from RL_Toy.utils import Q_function
 
 class gridWorld(Environment):
     """
@@ -261,6 +262,11 @@ class gridWorld(Environment):
                 elif cell == self.GOAL:
                     f[self.GOALD,:] = self.GOALC
                 if values is not None:
+                    if isinstance(values, Q_function):
+                        V = np.zeros(self.shape)
+                        for s in values.getStates():
+                            V[s] = values[(s, values.maxAction(s))]
+                        values = V
                     plt.text(nj + 1.5, ni + 1.5, str(np.round(values[i,j], 2)),
                              horizontalalignment='center',
                              verticalalignment='center',)
