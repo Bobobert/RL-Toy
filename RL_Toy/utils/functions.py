@@ -1,16 +1,18 @@
 from RL_Toy.base.const import *
+from RL_Toy.base.basics import Environment
 
-class Q_function:
+class Q_function():
     """
-    Action-value function in hash
-
-    Supports standard method [] for (state, action)
+    Action-value function in hashables.
     """
 
-    DEF_ACTION = 0
+    DEF_ACTION = 5
+    AS = None
 
-    def __init__(self):
+    def __init__(self, env:Environment = None):
         self.states = dict()
+        if env is not None:
+            self.AS = env.actionSpace
 
     def decomposeTuple(self, T):
         state = self.decomposeState(T[0])
@@ -21,6 +23,8 @@ class Q_function:
     def decomposeState(S):
         if isinstance(S, dict):
             S = S["agent"]
+        if isinstance(S, (int,str,float)):
+            return S
         return tuple(S)
 
     @staticmethod
@@ -32,7 +36,7 @@ class Q_function:
     def __getitem__(self, state_action):
         state, action = self.decomposeTuple(state_action)
         fromState = self.states.get(state, dict())
-        return fromState.get(action, DEF_ACTION)
+        return fromState.get(action, 0)
     
     def __setitem__(self, state_action, value):
         state, action = self.decomposeTuple(state_action)
@@ -40,14 +44,14 @@ class Q_function:
         if fromState is None:
             self.states[state] = {action:value}
         else:
-            #action_value = fromState.get(action, 0)
+            action_value = fromState.get(action, 0)
             fromState[action] = value 
 
     def maxAction(self, state):
         state = self.decomposeState(state)
         actionDict = self.states.get(state,None)
         if actionDict is None:
-            return self.DEF_ACTION
+            return self._defAction()
         maxV = - np.inf
         maxAction = None
         for action in actionDict.keys():
@@ -59,6 +63,11 @@ class Q_function:
 
     def getStates(self):
         return self.states.keys()
+            
+    def _defAction(self):
+        if self.AS is None:
+            return self.DEF_ACTION
+        return self.AS.sample()
 
 def checkForTuple(obj):
     if isinstance(obj, np.ndarray):
