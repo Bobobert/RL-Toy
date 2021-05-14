@@ -250,6 +250,14 @@ class gridWorld(Environment):
         # Suboptimal but simple to understand graphics for the environment
         fig = plt.figure(figsize=(self._w * self.GRAPHSCALE, self._h * self.GRAPHSCALE), clear = True)
         self.frame[:,:] = self.EMPTYC
+        
+        if values is not None:
+            if isinstance(values, Q_function):
+                V = np.zeros(self.shape)
+                for s in values.getStates():
+                    V[s] = values[(s, values.maxAction(s))]
+                values = V
+        
         for i in range(self._w):
             for j in range(self._h):
                 cell = self.grid[i,j]
@@ -262,11 +270,6 @@ class gridWorld(Environment):
                 elif cell == self.GOAL:
                     f[self.GOALD,:] = self.GOALC
                 if values is not None:
-                    if isinstance(values, Q_function):
-                        V = np.zeros(self.shape)
-                        for s in values.getStates():
-                            V[s] = values[(s, values.maxAction(s))]
-                        values = V
                     plt.text(nj + 1.5, ni + 1.5, str(np.round(values[i,j], 2)),
                              horizontalalignment='center',
                              verticalalignment='center',)
