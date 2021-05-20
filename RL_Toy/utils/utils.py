@@ -80,3 +80,46 @@ def runPolicy(env, policy, steps:int, name:str = None):
     print("Mean accumulate Reward {:.2f}, episodes {}".format(totR, eps))
     # Displays gif
     repGIF(name)
+    
+def runAgent(agent, steps:int, name: str = None):
+    """
+    Runs, generates and displays a gif in the colab notebook for gym classic control
+    environments. Others like ALE don't need this method to display.
+
+    parameters
+    ----------
+    agent: Agent class
+        Some agent class method
+    steps: integer
+        number of steps to run the policy on
+    name: string
+        name for the gif to be named after
+    """
+    env = agent.env_test if agent.env_test is not None else agent.env
+    policy = agent.policy
+    procObs = agent.processObs
+    
+    name = name + ".gif" if name is not None else "runPolicy {}.gif".format(timeFormatedS())
+    frames = []
+    policy.test = True
+    totR, epR, eps = 0, 0, 1
+    obs = env.reset()
+    for _ in range(steps):
+        frames.append(frame(env))
+        state = procObs(obs)
+        action = policy.getAction(state)
+        obs, reward, done, _ = env.step(action)
+        epR += reward
+        if done: 
+            obs = env.reset()
+            eps += 1
+            totR += epR
+            epR = 0
+    totR = totR / eps
+    policy.test = False
+    # Creates .gif
+    gif.save(frames, name, duration = steps * 0.1, unit="s", between="startend")
+    # Prints output
+    print("Mean accumulate Reward {:.2f}, episodes {}".format(totR, eps))
+    # Displays gif
+    repGIF(name)
