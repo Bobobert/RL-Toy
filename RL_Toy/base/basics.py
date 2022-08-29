@@ -117,10 +117,11 @@ class Policy(ABC):
     """
     Policy base class.
     """
-
-    test = False
-    greedy = False
-    _eps_ = 0.0
+    def __init__(self) -> None:
+        super().__init__()
+        self.test = False
+        self.greedy = False
+        self._eps_ = 0.0
     
     def getAction(self, state):
         """
@@ -246,15 +247,17 @@ class Agent:
     
     Method test is not recomended to be modified.
     """
-    policy = None
-    env, env_test = None, None
-    name = "base_Agent_v0"
-    done, lastObservation = True, None
-    episodeSteps, episodeReward = 0, 0.0
     def __init__(self):
-        assert self.env is not None, \
+        self.env_test = None
+        self.name = "base_Agent_v0"
+        self.done = True 
+        self.lastObservation = None
+        self.episodeSteps = 0
+        self.episodeReward = 0.0
+
+        assert self.__getattribute__('env') is not None, \
             "Agent needs environment reference"
-        assert self.policy is not None, \
+        assert self.__getattribute__('policy') is not None, \
             "Agent needs policy object"
 
     def processObs(self, obs):

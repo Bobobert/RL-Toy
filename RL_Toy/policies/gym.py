@@ -18,12 +18,12 @@ class gymPolicy(Policy):
         Must work as function(this), where this is the
         actual policy object. Should return a float.
     """
-    _eps_ = 0.0
-    _eps_test_ = 0.05
-    test = False
-    greedy = False
-
     def __init__(self, env, function, epsilonFunction):
+        self._eps_ = 0.0
+        self._eps_test_ = 0.05
+        self.test = False
+        self.greedy = False
+
         self.env = env
         self.actionSpace = env.action_space
         from gym.spaces import Box, Discrete
