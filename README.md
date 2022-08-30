@@ -1,7 +1,7 @@
 # RL Toy
-Code for simple example for environment, policies configuration on python. 
+Code for simple examples for RL environments, policies and configurations in python. 
 
-## Envitonments
+## Environments
 Includes:
 - gridWorld
 - stochasticGridWorld
