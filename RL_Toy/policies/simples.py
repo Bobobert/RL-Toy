@@ -79,7 +79,7 @@ class gridPolicyEpsilon(gridPolicy):
         return action
 
     def _epsilon_decay_(self):
-        if self.epsilon_mode == 'None':
+        if self.epsilon_mode == 'none':
             new_epsilon = self.epsilon
         elif self.epsilon_mode == 'linear':
             new_epsilon = (self.mode_steps -  self._action_calls) / self.mode_steps * self.epsilon
