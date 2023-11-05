@@ -6,4 +6,4 @@ from RL_Toy.base import Environment, Policy, ActionSpace, ObservationSpace
 __all__ = ["Environment", "render", "runEnv", "Policy", "ActionSpace", "ObservationSpace"]
 
 import importlib.metadata
-__version__ = importlib.metadata.version("roddle")
+__version__ = importlib.metadata.version("RL_Toy")

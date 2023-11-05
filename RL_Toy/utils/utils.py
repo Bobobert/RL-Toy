@@ -1,7 +1,9 @@
+from typing import Union
 import gif
 import time
 from IPython.display import display, Image
 from RL_Toy.base.const import *
+from pathlib import Path
 
 render = lambda e : plt.imshow(e.render(mode = 'rgb_array')) 
 
@@ -12,13 +14,16 @@ def frame(e):
 def timeFormatedS() -> str:
     return time.strftime("%H-%M-%S_%d-%b-%y", time.gmtime())
 
-def playGif(src: str):
-    with open(src,'rb') as file:
-        display(Image(file.read()))
+def playGif(src: Union[str, Path]):
+    with open(src,'rb') as file_:
+        display(Image(file_.read()))
 
-def saveGif(frames, path: str, fps: int = 24):
+def saveGif(frames, path: Union[str, Path], fps: int = 24):
     duration_between = int(1000 / max(1, fps))
+    if isinstance(path, str):
+        path = Path.cwd() / path
     gif.save(frames, path, duration=duration_between)
+    return path
     
 def runEnv(env, steps:int, name:str = "lrun", fps: int = 24):
     """
@@ -38,9 +43,9 @@ def runEnv(env, steps:int, name:str = "lrun", fps: int = 24):
             totR += epR
             epR = 0
     totR = totR / eps
-    saveGif(frames, name, fps=fps)
+    gif_path = saveGif(frames, name, fps=fps)
     print("Mean accumulate Reward {:.2f}, episodes {}".format(totR, eps))
-    playGif(name)
+    playGif(gif_path)
 
 def runPolicy(env, policy, steps:int, name:str = None, fps: int = 24):
     """
@@ -81,11 +86,11 @@ def runPolicy(env, policy, steps:int, name:str = None, fps: int = 24):
     totR = totR / eps
     policy.test = False
     # Creates .gif
-    saveGif(frames, name, fps=fps)
+    gifPath = saveGif(frames, name, fps=fps)
     # Prints output
     print("Mean accumulate Reward {:.2f}, episodes {}".format(totR, eps))
     # Displays gif
-    playGif(name)
+    playGif(gifPath)
     
 def runAgent(agent, steps:int, name: str = None, fps: int = 24):
     """
@@ -126,8 +131,8 @@ def runAgent(agent, steps:int, name: str = None, fps: int = 24):
     totR = totR / eps
     policy.test = False
     # Creates .gif
-    saveGif(frames, name, fps=fps)
+    gifPath = saveGif(frames, name, fps=fps)
     # Prints output
     print("Mean accumulate Reward {:.2f}, episodes {}".format(totR, eps))
     # Displays gif
-    playGif(name)
+    playGif(gifPath)
