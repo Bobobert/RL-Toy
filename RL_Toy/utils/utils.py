@@ -22,7 +22,7 @@ def saveGif(frames, path: Union[str, Path], fps: int = 24):
     duration_between = int(1000 / max(1, fps))
     if isinstance(path, str):
         path = Path.cwd() / path
-    gif.save(frames, path, duration=duration_between)
+    gif.save(frames, str(path), duration=duration_between)
     return path
     
 def runEnv(env, steps:int, name:str = "lrun", fps: int = 24):
