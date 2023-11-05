@@ -12,11 +12,15 @@ def frame(e):
 def timeFormatedS() -> str:
     return time.strftime("%H-%M-%S_%d-%b-%y", time.gmtime())
 
-def repGIF(src: str):
+def playGif(src: str):
     with open(src,'rb') as file:
         display(Image(file.read()))
-        
-def runEnv(env, steps:int, name:str = "lrun"):
+
+def saveGif(frames, path: str, fps: int = 24):
+    duration_between = int(1000 / max(1, fps))
+    gif.save(frames, path, duration=duration_between)
+    
+def runEnv(env, steps:int, name:str = "lrun", fps: int = 24):
     """
     Run random steps in the environment
     """
@@ -34,11 +38,11 @@ def runEnv(env, steps:int, name:str = "lrun"):
             totR += epR
             epR = 0
     totR = totR / eps
-    gif.save(frames, name, duration = steps * 0.1, unit="s", between="startend")
+    saveGif(frames, name, fps=fps)
     print("Mean accumulate Reward {:.2f}, episodes {}".format(totR, eps))
-    repGIF(name)
+    playGif(name)
 
-def runPolicy(env, policy, steps:int, name:str = None):
+def runPolicy(env, policy, steps:int, name:str = None, fps: int = 24):
     """
     Runs, generates and displays a gif in the colab notebook for gym classic control
     environments. Others like ALE don't need this method to display.
@@ -56,6 +60,8 @@ def runPolicy(env, policy, steps:int, name:str = None):
         number of steps to run the policy on
     name: string
         name for the gif to be named after
+    fps: int, default 24
+        Frames per second for generated GIF
     """
     name = name + ".gif" if name is not None else "runPolicy {}.gif".format(timeFormatedS())
     frames = []
@@ -75,13 +81,13 @@ def runPolicy(env, policy, steps:int, name:str = None):
     totR = totR / eps
     policy.test = False
     # Creates .gif
-    gif.save(frames, name, duration = steps * 0.1, unit="s", between="startend")
+    saveGif(frames, name, fps=fps)
     # Prints output
     print("Mean accumulate Reward {:.2f}, episodes {}".format(totR, eps))
     # Displays gif
-    repGIF(name)
+    playGif(name)
     
-def runAgent(agent, steps:int, name: str = None):
+def runAgent(agent, steps:int, name: str = None, fps: int = 24):
     """
     Runs, generates and displays a gif in the colab notebook for gym classic control
     environments. Others like ALE don't need this method to display.
@@ -94,6 +100,8 @@ def runAgent(agent, steps:int, name: str = None):
         number of steps to run the policy on
     name: string
         name for the gif to be named after
+    fps: int, default 24
+        Frames per second for generated GIF
     """
     env = agent.env_test if agent.env_test is not None else agent.env
     policy = agent.policy
@@ -118,8 +126,8 @@ def runAgent(agent, steps:int, name: str = None):
     totR = totR / eps
     policy.test = False
     # Creates .gif
-    gif.save(frames, name, duration = steps * 0.1, unit="s", between="startend")
+    saveGif(frames, name, fps=fps)
     # Prints output
     print("Mean accumulate Reward {:.2f}, episodes {}".format(totR, eps))
     # Displays gif
-    repGIF(name)
+    playGif(name)
