@@ -44,7 +44,7 @@ def runEnv(env, steps:int, name:str = "lrun", fps: int = 24):
             epR = 0
     totR = totR / eps
     gif_path = saveGif(frames, name, fps=fps)
-    print("Mean accumulate Reward {:.2f}, episodes {}".format(totR, eps))
+    print(f"Last run accumulate reward {epR}\nMean accumulate Reward {totR:.2f}\nEpisodes {eps}")
     playGif(gif_path)
 
 def runPolicy(env, policy, steps:int, name:str = None, fps: int = 24):
@@ -88,7 +88,7 @@ def runPolicy(env, policy, steps:int, name:str = None, fps: int = 24):
     # Creates .gif
     gifPath = saveGif(frames, name, fps=fps)
     # Prints output
-    print("Mean accumulate Reward {:.2f}, episodes {}".format(totR, eps))
+    print(f"Last run accumulate reward {epR}\nMean accumulate Reward {totR:.2f}\nEpisodes {eps}")
     # Displays gif
     playGif(gifPath)
     
@@ -133,6 +133,6 @@ def runAgent(agent, steps:int, name: str = None, fps: int = 24):
     # Creates .gif
     gifPath = saveGif(frames, name, fps=fps)
     # Prints output
-    print("Mean accumulate Reward {:.2f}, episodes {}".format(totR, eps))
+    print(f"Last run accumulate reward {epR}\nMean accumulate Reward {totR:.2f}\nEpisodes {eps}")
     # Displays gif
     playGif(gifPath)
